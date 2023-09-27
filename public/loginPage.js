@@ -9,7 +9,7 @@ userFormObject.loginFormCallback = function(data) {
     if(response.success === true) {
       location.reload();
     } else {
-      setLoginErrorMessage(message);
+      userFormObject.setLoginErrorMessage('Ошибка авторизации');
     };
   });
 };
@@ -20,7 +20,7 @@ registerFormCallback.loginFormCallback = function(data) {
       if(response.success === true) {
         location.reload();
       } else {
-        setRegisterErrorMessage(message);
+        userFormObject.setRegisterErrorMessage('Ошибка регистрации');
       };
     });
   };

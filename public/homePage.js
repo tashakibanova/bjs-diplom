@@ -27,9 +27,7 @@ function getCurrencyRates() {
 }
 getCurrencyRates(); // Получение текущих валют
 // Выполнение функции с получением валют раз в минуту
-setInterval(() => {
-    getCurrencyRates();
-  }, 60000);
+setInterval(getCurrencyRates, 60000);
 
 //Операции с деньгами
 const moneyManager = new MoneyManager(); 
@@ -38,9 +36,9 @@ moneyManager.addMoneyCallback = function (data) {
     ApiConnector.addMoney(data, (response) => {
       if (response.success === true) {
         ProfileWidget.showProfile(response.data); // Отображение новых данных о пользователе
-        setMessage('Успешно'); // Отображение сообщения об успехе
+        moneyManager.setMessage(true, 'Успешно'); // Отображение сообщения об успехе
       } else {
-        setMessage(response.error); // Отображение сообщения об ошибке
+        moneyManager.setMessage(false,'Ошибка пополнения'); // Отображение сообщения об ошибке
       }
     });
 }
@@ -49,9 +47,9 @@ moneyManager.conversionMoneyCallback = function (data) {
     ApiConnector.convertMoney(data, (response) => {
       if (response.success === true) {
         ProfileWidget.showProfile(response.data); // Отображение новых данных о пользователе
-        setMessage('Успешно'); // Отображение сообщения об успехе
+        moneyManager.setMessage(true, 'Успешно'); // Отображение сообщения об успехе
       } else {
-        setMessage(response.error); // Отображение сообщения об ошибке
+        moneyManager.setMessage(false,'Ошибка пополнения'); // Отображение сообщения об ошибке
       }
     });
   }
@@ -60,9 +58,9 @@ moneyManager.sendMoneyCallback = function (data) {
     ApiConnector.transferMoney(data, (response) => {
       if (response.success === true) {
         ProfileWidget.showProfile(response.data); // Отображение новых данных о пользователе
-        setMessage('Успешно'); // Отображение сообщения об успехе
+        moneyManager.setMessage(true, 'Успешно'); // Отображение сообщения об успехе
       } else {
-        setMessage(response.error); // Отображение сообщения об ошибке
+        moneyManager.setMessage(false,'Ошибка пополнения'); // Отображение сообщения об ошибке
       }
     });
 }
@@ -74,9 +72,9 @@ ApiConnector.getFavorites((response) => {
     if (response.success === true) {
         favoritesWidget.clearTable(); // Очистка текущего списка избранного
         favoritesWidget.fillTable(response.data); // Отрисовка полученных данных
-        favoritesWidget.updateUsersList(response.data); // Заполнение выпадающего списка для перевода денег
+        moneyManager.updateUsersList(response.data); // Заполнение выпадающего списка для перевода денег
     } else {
-        setMessage(response.error);
+      favoritesWidget.setMessage(false,'Ошибка');
     }
   })
 
@@ -85,9 +83,9 @@ favoritesWidget.addUserCallback = function (data) {
       if (response.success === true) {
         favoritesWidget.clearTable(); // Очистка текущего списка избранного
         favoritesWidget.fillTable(response.data); // Отрисовка полученных данных
-        favoritesWidget.updateUsersList(response.data); // Заполнение выпадающего списка для перевода денег
+        moneyManager.updateUsersList(response.data); // Заполнение выпадающего списка для перевода денег
       } else {
-        setMessage(response.error); // Отображение сообщения об ошибке
+        favoritesWidget.setMessage(false,'Ошибка'); // Отображение сообщения об ошибке
       }
     });
 }
@@ -97,9 +95,9 @@ favoritesWidget.removeUserCallback = function (data) {
       if (response.success === true) {
         favoritesWidget.clearTable(); // Очистка текущего списка избранного
         favoritesWidget.fillTable(response.data); // Отрисовка полученных данных
-        favoritesWidget.updateUsersList(response.data); // Заполнение выпадающего списка для перевода денег
+        moneyManager.updateUsersList(response.data); // Заполнение выпадающего списка для перевода денег
       } else {
-        setMessage(response.error); // Отображение сообщения об ошибке
+        favoritesWidget.setMessage(false,'Ошибка'); // Отображение сообщения об ошибке
       }
     });
 }
